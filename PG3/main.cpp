@@ -7,19 +7,24 @@ using namespace std;
 typedef void (*Callback)();
 
 void showCorrect() {
-    cout << "正解" << endl;
+    cout << "正解！" << endl;
 }
 
 void showWrong() {
-    cout << "不正解" << endl;
+    cout << "不正解..." << endl;
 }
 
-void judge(int dice, int user, Callback cb) {
+void judge(int dice, int user, Callback onCorrect, Callback onWrong) {
     cout << "結果は・・・" << endl;
     Sleep(3000);
-    Callback results[2] = { showWrong, showCorrect };
-    cb = results[dice % 2 == user];
-    cb();
+
+    int isOdd = dice % 2;
+    if (isOdd == user) {
+        onCorrect();
+    }
+    else {
+        onWrong();
+    }
 }
 
 int main() {
@@ -33,8 +38,7 @@ int main() {
     int dice = rand() % 6 + 1;
     cout << "出目は " << dice << endl;
 
-    Callback cb = NULL;
-    judge(dice, user, cb);
+    judge(dice, user, showCorrect, showWrong);
 
     return 0;
 }
