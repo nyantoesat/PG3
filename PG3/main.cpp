@@ -15,6 +15,7 @@ void showWrong() {
 }
 
 void judge(int dice, int user, Callback cb) {
+    cout << "結果は・・・" << endl;
     Sleep(3000);
     Callback results[2] = { showWrong, showCorrect };
     cb = results[dice % 2 == user];
