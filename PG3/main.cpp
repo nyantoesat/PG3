@@ -1,57 +1,64 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <Windows.h>
 
+const double PI = 3.14159265358979323846;
 
-typedef struct Animal {
-    const char* name;
-    void (*speak)(struct Animal* self);  
-} Animal;
+class IShape {
+public:
+    virtual void Size() = 0;
+    virtual void Draw() = 0;
+    virtual ~IShape() {}
+};
 
-
-void dog_speak(Animal* self) {
-    printf("%sは言います：ワン！\n", self->name);
-}
-Animal new_dog(const char* name) {
-    Animal a;
-    a.name = name;
-    a.speak = dog_speak;
-    return a;
-}
-
-// ===== Cat クラス =====
-void cat_speak(Animal* self) {
-    printf("%sは言います：ニャー！\n", self->name);
-}
-Animal new_cat(const char* name) {
-    Animal a;
-    a.name = name;
-    a.speak = cat_speak;
-    return a;
-}
-
-
-void bird_speak(Animal* self) {
-    printf("%sは言います：チュン！\n", self->name);
-}
-Animal new_bird(const char* name) {
-    Animal a;
-    a.name = name;
-    a.speak = bird_speak;
-    return a;
-}
-
-int main(void) {
-    system("chcp 65001 > nul");
-    Animal animals[3];
-    animals[0] = new_dog("レックス");
-    animals[1] = new_cat("ミミ");
-    animals[2] = new_bird("ピヨ");
-
-    int count = sizeof(animals) / sizeof(animals[0]);
-
-    for (int i = 0; i < count; i++) {
-        animals[i].speak(&animals[i]); 
+class Circle : public IShape {
+private:
+    double radius;
+public:
+    Circle(double r) {
+        radius = r;
     }
+    void Size() override {
+        double area = PI * radius * radius;
+        printf("円の面積: %.2f\n", area);
+    }
+    void Draw() override {
+        printf("図形: 円、半径: %.2f\n", radius);
+    }
+};
+
+class MyRectangle : public IShape {
+private:
+    double width;
+    double height;
+public:
+    MyRectangle(double w, double h) {
+        width = w;
+        height = h;
+    }
+    void Size() override {
+        double area = width * height;
+        printf("矩形の面積: %.2f\n", area);
+    }
+    void Draw() override {
+        printf("図形: 矩形、幅: %.2f、高さ: %.2f\n", width, height);
+    }
+};
+
+int main()
+{
+    system("chcp 65001 > nul");
+    IShape* shape1 = new Circle(5.0);
+    IShape* shape2 = new MyRectangle(4.0f, 6.0f);
+
+    shape1->Draw();
+    shape1->Size();
+    printf("\n");
+    shape2->Draw();
+    shape2->Size();
+
+    delete shape1;
+    delete shape2;
 
     return 0;
 }
