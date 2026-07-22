@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <Windows.h>
 
-// ===== 基底クラス：Animal =====
+
 class Animal {
 protected:
     const char* name;
